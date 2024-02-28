@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-class ObservableViewModel: ObservableObject {
+@Observable class ObservableViewModel {
     
-    @Published var title: String = "Some title"
+    var title: String = "Some title"
 }
 
 struct ContentView: View {
     
-    @StateObject private var viewModel = ObservableViewModel()
+    @State private var viewModel = ObservableViewModel()
     
     var body: some View {
         VStack(spacing: 40) {
@@ -26,13 +26,13 @@ struct ContentView: View {
             
             SomeThirdView()
         }
-        .environmentObject(viewModel)
+        .environment(viewModel)
     }
 }
 
 struct SomeChildView: View {
     
-    @ObservedObject var viewModel: ObservableViewModel
+    @Bindable var viewModel: ObservableViewModel
     
     var body: some View {
         Button(viewModel.title) {
@@ -43,7 +43,7 @@ struct SomeChildView: View {
 
 struct SomeThirdView: View {
     
-    @EnvironmentObject var viewModel: ObservableViewModel
+    @Environment(ObservableViewModel.self) var viewModel
     
     var body: some View {
         Button(viewModel.title) {
